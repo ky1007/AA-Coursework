@@ -3,6 +3,15 @@
 # fill in the consecutive set.
 
 def missing_numbers(nums)
+  first_num = nums.first
+  last_num = nums.last
+  missing_nums = []
+
+  (nums[0]..nums[-1]).each do |n|
+    missing_nums << n unless nums.include?(n)
+  end
+
+  missing_nums
 end
 
 # Write a method that given a string representation of a binary number will
@@ -15,6 +24,15 @@ end
 # You may NOT use the Ruby String class's built in base conversion method.
 
 def base2to10(binary)
+  i = 0
+  converted = []
+
+  binary.to_s.split('').reverse.map do |n|
+    converted << n.to_i * (2 ** i)
+    i += 1
+  end
+
+  converted.reduce(:+)
 end
 
 class Hash
@@ -29,8 +47,14 @@ class Hash
   # above. Do not use Hash#select in your method.
 
   def my_select(&prc)
-  end
+    new_hash = {}
 
+    self.each do |k, v|
+      new_hash[k] = prc.call(k)
+    end
+
+    new_hash
+  end
 end
 
 class Hash
@@ -69,6 +93,16 @@ end
 # position of the Lucas series.
 
 def lucas_numbers(n)
+  start = [2, 1]
+
+  return start[0] if n == 0
+
+  until start.length == n.abs + 1
+    start << start[-2..-1].reduce(:+)
+  end
+
+  return start[-1] if n > 0 || (n < 0 && n.even?)
+  return start = -1 * (start[-1]) if n < 0 && n.odd?
 end
 
 # A palindrome is a word or sequence of words that reads the same backwards as
@@ -76,4 +110,20 @@ end
 # string. If there is no palindrome longer than two letters, return false.
 
 def longest_palindrome(string)
+  words = string.chars
+  results = []
+
+  words.each_with_index do |w, idx|
+    (idx+2...words.length).each do |idx2|
+      potential_palindrome = words[idx..idx2].join
+      results << potential_palindrome if potential_palindrome == potential_palindrome.reverse
+    end
+  end
+
+  # p results.max.length
+
+  # palindrome = words.select { |word| word.downcase == word.downcase.reverse }
+  return false if results == []
+  return longest_length = results.sort_by {|word| word.length }[-1].length
+
 end
