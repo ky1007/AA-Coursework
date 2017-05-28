@@ -6,7 +6,7 @@ require_relative "player"
 class BattleshipGame
   attr_reader :board, :player
 
-  def initialize(player = HumanPlayer.new("Jeff"), board = Board.random)
+  def initialize(player = HumanPlayer.new("Jeff"), board = Board.new)
     @player = player
     @board = board
     @hit = false
@@ -27,7 +27,7 @@ class BattleshipGame
   def attack(pos)
     row = pos[0]
     column = pos[1]
-
+    p @board
     @board[row][column] = :x
   end
 

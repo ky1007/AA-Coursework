@@ -36,12 +36,10 @@ class Board
   def place_random_ship
     raise "Board is full!" if full?
 
-    rand_row = rand(0...@grid.length)[0]
-    rand_column = rand(0...@grid.length)[0]
+    rand_row = rand(@grid.length)
+    rand_column = rand(@grid.length)
 
-    until full?
-      @grid[rand_row][rand_column] == :s if self.empty?([rand_row, rand_column])
-    end
+    @grid[rand_row][rand_column] = :s if self.empty?([rand_row, rand_column])
   end
 
   def won?
