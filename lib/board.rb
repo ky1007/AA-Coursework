@@ -1,31 +1,51 @@
-# show information about the Board: the display,
-# what ships remain, where the ships are, check user_input
 class Board
 
-  attr_accessor :grid
+  attr_reader :grid
 
-  def initialize
+  def initialize(grid = Board.default_grid)
     @grid = grid
   end
 
-
-  # print the board, mark any spaces that have
-  # been fired upon
-  def display
-
+  def self.default_grid
+    Array.new(10) { Array.new(10) }
   end
 
-  # return the number of of valid
-  # targets (ships) remaining
   def count
+    num_ships = 0
+
+    @grid.each do |row|
+      num_ships += row.count(:s)
+    end
+
+    num_ships
   end
 
-  # randomly fill the grid with ships
-  def populate_grid
+  def empty?(pos = [])
+    row = pos[0]
+    column = pos[1]
+
+    return true if pos != [] && @grid[row][column] == nil
+    return true if pos == [] && @grid.flatten.all? { |ele| ele == nil }
+    false
   end
 
-  # check that the user input is in range
-  def in_range?(pos)
+  def full?
+    @grid.flatten.all? { |ele| ele != nil}
   end
 
+  def place_random_ship
+    raise "Board is full!" if full?
+
+    rand_row = rand(0...@grid.length)[0]
+    rand_column = rand(0...@grid.length)[0]
+
+    until full?
+      @grid[rand_row][rand_column] == :s if self.empty?([rand_row, rand_column])
+    end
+  end
+
+  def won?
+    return false if @grid.flatten.count(:s) >= 1
+    true
+  end
 end
