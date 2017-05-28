@@ -1,2 +1,3 @@
 class HumanPlayer
+  
 end

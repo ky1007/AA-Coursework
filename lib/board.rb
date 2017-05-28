@@ -46,4 +46,14 @@ class Board
     return false if @grid.flatten.count(:s) >= 1
     true
   end
+
+  def [](pos)
+    row, column = pos
+    @grid[row][column]
+  end
+
+  def []=(pos, mark)
+    row, column = pos
+    @grid[row][column] = mark
+  end
 end
