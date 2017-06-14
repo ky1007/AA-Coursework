@@ -10,5 +10,6 @@ class Enrollment < ActiveRecord::Base
     foreign_key: :student_id,
     class_name: :User
 
+  
 
 end
